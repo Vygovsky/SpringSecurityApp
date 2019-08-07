@@ -25,7 +25,6 @@ CREATE TABLE user_roles (
 );
 
 INSERT INTO users VALUES (1, 'Roman', '$2y$12$J2K6QP1k1AyDb7iW1mESD.z3c3eCVEfTEYV9SyTv6uuo7VwYjodbi');
-
 INSERT INTO roles VALUES (1, 'Role-User');
 INSERT INTO roles VALUES (2, 'Role-Admin');
 

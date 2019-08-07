@@ -8,36 +8,39 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.stereotype.Service;
 
-
+@Service
 public class SecurityServiceImpl implements SecuritySecvice {
-    private static final Logger LOGGER = LoggerFactory.getLogger(SecurityServiceImpl.class);
+    private static final Logger logger = LoggerFactory.getLogger(SecurityServiceImpl.class);
 
     @Autowired
-    private AuthenticationManager manager;
+    private AuthenticationManager authenticationManager;
+
     @Autowired
-    private UserDetailsService detailsService;
+    private UserDetailsService userDetailsService;
 
     @Override
     public String findLoggedInUsername() {
-        Object obj = SecurityContextHolder.getContext().getAuthentication().getDetails();
-        if (obj instanceof UserDetails) {
-            return ((UserDetails) obj).getUsername();
+        Object userDetails = SecurityContextHolder.getContext().getAuthentication().getDetails();
+        if (userDetails instanceof UserDetails) {
+            return ((UserDetails) userDetails).getUsername();
         }
         return null;
     }
 
     @Override
     public void autoLogin(String username, String password) {
-        UserDetails userDetails = detailsService.loadUserByUsername(username);
-        UsernamePasswordAuthenticationToken token =
+        UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+        UsernamePasswordAuthenticationToken authenticationToken =
                 new UsernamePasswordAuthenticationToken(userDetails, password, userDetails.getAuthorities());
-        manager.authenticate(token);
 
-        if (token.isAuthenticated()) {
-            SecurityContextHolder.getContext().setAuthentication(token);
+        authenticationManager.authenticate(authenticationToken);
 
-            LOGGER.debug(String.format("Successful %s auto logged in", username));
+        if (authenticationToken.isAuthenticated()) {
+            SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+
+            logger.debug(String.format("Successfully %s auto logged!", username));
         }
     }
 }
