@@ -2,15 +2,12 @@ package net.security.service;
 
 import net.security.dao.RoleDao;
 import net.security.dao.UserDao;
-import net.security.modal.Role;
-import org.springframework.beans.factory.annotation.Autowired;
 import net.security.modal.User;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
-import java.util.Set;
-
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -19,17 +16,20 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private UserDao userDao;
     @Autowired
-    private BCryptPasswordEncoder passwordEncoder;
+    private PasswordEncoder passwordEncoder;
 
     @Override
     public void save(User user) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-        Set<Role> roles = new HashSet<>();
-        roles.add(roleDao.findOne(1L));
+        user.setRoles(new HashSet<>(roleDao.findAll()));
+        userDao.save(user);
+
+       /* Set<Role> roles = new HashSet<>();
+        roles.add(roleDao.getOne(1L));
         user.setRoles(roles);
 
         user.setRoles(new HashSet<>(roleDao.findAll()));
-        userDao.save(user);
+        userDao.save(user);*/
     }
 
     @Override

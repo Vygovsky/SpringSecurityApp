@@ -1,3 +1,4 @@
+/*
 package net.security.service;
 import net.security.dao.UserDao;
 import net.security.modal.Role;
@@ -32,3 +33,4 @@ public class UserDetalServiceImpl implements UserDetailsService {
         return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(), grantedAuthorities);
     }
 }
+*/

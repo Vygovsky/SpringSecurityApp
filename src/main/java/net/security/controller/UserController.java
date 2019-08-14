@@ -16,8 +16,8 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-    @Autowired
-    private SecuritySecvice securityService;
+    /*@Autowired
+    private SecuritySecvice securityService;*/
 
     @Autowired
     private UserValidator userValidator;
@@ -30,7 +30,7 @@ public class UserController {
     }
 
     @RequestMapping(value = "/registration", method = RequestMethod.POST)
-    public String registration(@ModelAttribute("userForm") User userForm, BindingResult bindingResult) {
+    public String registration(@ModelAttribute("userForm") User userForm, BindingResult bindingResult) {/*
         userValidator.validate(userForm, bindingResult);
 
         if (bindingResult.hasErrors()) {
@@ -38,7 +38,7 @@ public class UserController {
         }
 
         userService.save(userForm);
-        securityService.autoLogin(userForm.getUsername(), userForm.getConfirmPassword());
+        securityService.autoLogin(userForm.getUsername(), userForm.getConfirmPassword());*/
         return "redirect:/welcome";
     }
 
